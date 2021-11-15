@@ -2,13 +2,11 @@ package kg.company.empsandsalariestask.models;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
+@Table(name = "employees")
 public class Employees {
 
     @Id
