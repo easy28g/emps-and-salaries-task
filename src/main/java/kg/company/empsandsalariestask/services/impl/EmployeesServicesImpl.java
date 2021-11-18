@@ -14,15 +14,11 @@ public class EmployeesServicesImpl implements EmployeesServices {
     @Autowired
     private EmployeesRepository employeesRepository;
 
-
     @Override
     public EmployeesDto saveEmployees(EmployeesDto employeesDto) {
-        Employees newEmployeeDto = new Employees();
-        newEmployeeDto.setId(employeesDto.getId());
-        newEmployeeDto.setFirstName(employeesDto.getFirstName());
-        newEmployeeDto.setSecondName(employeesDto.getSecondName());
-        newEmployeeDto.setActive(employeesDto.getActive());
-        return EmployeesMapper.INSTANCE.toEmployeesDto(employeesRepository.save(newEmployeeDto));
+        Employees newEmployee = EmployeesMapper.INSTANCE.toEmployees(employeesDto);
+        employeesRepository.save(newEmployee);
+        return EmployeesMapper.INSTANCE.toEmployeesDto(newEmployee);
     }
 }
 
