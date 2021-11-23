@@ -8,6 +8,8 @@ import kg.company.empsandsalariestask.services.EmployeesServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmployeesServicesImpl implements EmployeesServices {
 
@@ -19,6 +21,12 @@ public class EmployeesServicesImpl implements EmployeesServices {
         Employees newEmployee = EmployeesMapper.INSTANCE.toEmployees(employeesDto);
         employeesRepository.save(newEmployee);
         return EmployeesMapper.INSTANCE.toEmployeesDto(newEmployee);
+    }
+
+    @Override
+    public List<EmployeesDto> getAllEmployees() {
+        List<Employees> employeesList = employeesRepository.findAll();
+        return EmployeesMapper.INSTANCE.toEmployeesDtoList(employeesList);
     }
 }
 
