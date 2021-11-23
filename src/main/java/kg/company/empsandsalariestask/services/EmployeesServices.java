@@ -7,4 +7,5 @@ import java.util.List;
 public interface EmployeesServices {
     EmployeesDto saveEmployees(EmployeesDto employeesDto);
     List<EmployeesDto> getAllEmployees();
+    EmployeesDto deactivateEmployee(Long id);
 }

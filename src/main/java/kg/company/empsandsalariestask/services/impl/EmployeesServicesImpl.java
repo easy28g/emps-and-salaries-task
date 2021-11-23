@@ -1,6 +1,7 @@
 package kg.company.empsandsalariestask.services.impl;
 
 import kg.company.empsandsalariestask.dao.EmployeesRepository;
+import kg.company.empsandsalariestask.exceptions.MyExceptions;
 import kg.company.empsandsalariestask.mappers.EmployeesMapper;
 import kg.company.empsandsalariestask.models.Employees;
 import kg.company.empsandsalariestask.models.dto.EmployeesDto;
@@ -27,6 +28,18 @@ public class EmployeesServicesImpl implements EmployeesServices {
     public List<EmployeesDto> getAllEmployees() {
         List<Employees> employeesList = employeesRepository.findAll();
         return EmployeesMapper.INSTANCE.toEmployeesDtoList(employeesList);
+    }
+
+    @Override
+    public EmployeesDto deactivateEmployee(Long id) {
+        if(employeesRepository.existsById(id)){
+            Employees employees = employeesRepository.findById(id).get();
+            EmployeesDto employeesDto = EmployeesMapper.INSTANCE.toEmployeesDto(employees);
+            employeesDto.setActive(false);
+            Employees employeeToSave = employeesRepository.save(EmployeesMapper.INSTANCE.toEmployees(employeesDto));
+            return EmployeesMapper.INSTANCE.toEmployeesDto(employeeToSave);
+        }
+        throw new MyExceptions("Сотрудник с таким ID не найден");
     }
 }
 

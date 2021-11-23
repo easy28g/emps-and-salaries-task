@@ -23,4 +23,9 @@ public class EmployeesController {
     public List<EmployeesDto> employeesDtoList(){
         return employeesServices.getAllEmployees();
     }
+
+    @DeleteMapping("/deactivate-employee/{id}")
+    public EmployeesDto deactivateEmployeeById(@PathVariable Long id){
+        return employeesServices.deactivateEmployee(id);
+    }
 }
