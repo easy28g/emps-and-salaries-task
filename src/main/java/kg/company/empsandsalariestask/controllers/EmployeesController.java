@@ -14,7 +14,7 @@ public class EmployeesController {
     @Autowired
     private EmployeesServices employeesServices;
 
-    @PostMapping("/save")
+    @PostMapping("/save-employee")
     public EmployeesDto send(@RequestBody EmployeesDto employeesDto){
         return employeesServices.saveEmployees(employeesDto);
     }
