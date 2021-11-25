@@ -21,10 +21,9 @@ public class SalariesServiceImpl implements SalariesService {
     private SalariesRepository salariesRepository;
 
     @Override
-    public SalariesDto saveSalaryAndEmpId(Long id, SalariesDto salariesDto) {
-
+    public SalariesDto saveSalaryAndEmpId(SalariesDto salariesDto) {
         Salaries salary = SalariesMapper.INSTANCE.toSalaries(salariesDto);
-
-        return null;
+        salariesRepository.save(salary);
+        return SalariesMapper.INSTANCE.toSalariesDto(salary);
     }
 }

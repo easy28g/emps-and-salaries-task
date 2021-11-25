@@ -13,7 +13,7 @@ public class SalariesController {
     private SalariesService salariesService;
 
     @PostMapping("save-salary")
-    public SalariesDto saveSalaries(@PathVariable Long id, @RequestBody SalariesDto salariesDto){
-        return salariesService.saveSalaryAndEmpId(id, salariesDto);
+    public SalariesDto saveSalaries(@RequestBody SalariesDto salariesDto){
+        return salariesService.saveSalaryAndEmpId(salariesDto);
     }
 }
