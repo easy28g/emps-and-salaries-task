@@ -12,7 +12,7 @@ public class SalariesController {
     @Autowired
     private SalariesService salariesService;
 
-    @PostMapping("save-salary")
+    @PostMapping("/save-salary")
     public SalariesDto saveSalaries(@RequestBody SalariesDto salariesDto){
         return salariesService.saveSalaryAndEmpId(salariesDto);
     }

@@ -39,7 +39,7 @@ public class EmployeesServicesImpl implements EmployeesServices {
             Employees employeeToSave = employeesRepository.save(EmployeesMapper.INSTANCE.toEmployees(employeesDto));
             return EmployeesMapper.INSTANCE.toEmployeesDto(employeeToSave);
         }
-        throw new MyExceptions("Сотрудник с таким ID не найден");
+        throw new MyExceptions("Сотрудник с таким ID не найден - deactivateEmployee");
     }
 }
 
