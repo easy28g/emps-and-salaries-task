@@ -5,6 +5,8 @@ import kg.company.empsandsalariestask.services.SalariesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.ExemptionMechanismException;
+
 @RestController
 @RequestMapping("api/v1/salaries")
 public class SalariesController {
@@ -13,7 +15,7 @@ public class SalariesController {
     private SalariesService salariesService;
 
     @PostMapping("/save-salary")
-    public SalariesDto saveSalaries(@RequestBody SalariesDto salariesDto){
+    public SalariesDto saveSalaries(@RequestBody SalariesDto salariesDto) throws ExemptionMechanismException {
         return salariesService.saveSalaryAndEmpId(salariesDto);
     }
 }

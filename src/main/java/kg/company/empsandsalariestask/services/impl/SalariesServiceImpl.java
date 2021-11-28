@@ -2,40 +2,39 @@ package kg.company.empsandsalariestask.services.impl;
 
 import kg.company.empsandsalariestask.dao.EmployeesRepository;
 import kg.company.empsandsalariestask.dao.SalariesRepository;
+import kg.company.empsandsalariestask.exceptions.EmployeeExistsExceptions;
 import kg.company.empsandsalariestask.exceptions.MyExceptions;
 import kg.company.empsandsalariestask.mappers.SalariesMapper;
-import kg.company.empsandsalariestask.models.Employees;
 import kg.company.empsandsalariestask.models.Salaries;
 import kg.company.empsandsalariestask.models.dto.SalariesDto;
-import kg.company.empsandsalariestask.services.EmployeesServices;
 import kg.company.empsandsalariestask.services.SalariesService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.crypto.ExemptionMechanismException;
 
 @Service
 public class SalariesServiceImpl implements SalariesService {
 
-    // Need Logger
-//    private static final Logger LOGGER = LoggerFactory.getLogger(SalariesServiceImpl.class);
-
     @Autowired
     private SalariesRepository salariesRepository;
+    @Autowired
+    private EmployeesRepository employeesRepository;
 
     @Override
-    public SalariesDto saveSalaryAndEmpId(SalariesDto salariesDto) {
+    public SalariesDto saveSalaryAndEmpId(SalariesDto salariesDto) throws ExemptionMechanismException {
         try {
             Salaries salary = SalariesMapper.INSTANCE.toSalaries(salariesDto);
-            if (salariesDto.getEmployees().getId() != salariesRepository.findSalaryByEmplId(salariesDto.getEmployees().getId())) {
+            if ((salariesDto.getEmployees().getId() != salariesRepository.findSalaryByEmplId(salariesDto.getEmployees().getId()))
+                && (salariesDto.getEmployees().getId() == employeesRepository.findEmplById(salariesDto.getEmployees().getId()))){
                 salariesRepository.save(salary);
                 return SalariesMapper.INSTANCE.toSalariesDto(salary);
             } else {
-                System.out.println("Сотрудник уже есть в списке зарплат - SalariesServiceImpl saveSalaryAndEmplId() sout");
-                throw new MyExceptions("Сотрудник уже есть в списке зарплат - SalariesServiceImpl saveSalaryAndEmplId()");
+                System.out.println("Не удалось добавить сотрудника в список зарплат!");
+                return null;
             }
         }catch (Exception e){
-            throw new MyExceptions("Сотрудник уже есть в списке зарплат - SalariesServiceImpl saveSalaryAndEmplId()");
+            throw new ExemptionMechanismException("SalariesServiceImpl: method - saveSalaryAndEmplId() catch(Exception e)");
         }
     }
 }
