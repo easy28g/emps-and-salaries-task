@@ -18,4 +18,27 @@ public class SalariesController {
     public SalariesDto saveSalaries(@RequestBody SalariesDto salariesDto) throws ExemptionMechanismException {
         return salariesService.saveSalaryAndEmpId(salariesDto);
     }
+
+    @PutMapping("/change")
+    public SalariesDto changeSalary(@RequestBody SalariesDto salariesDto){
+        return salariesService.changeSalaryColumn(salariesDto);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

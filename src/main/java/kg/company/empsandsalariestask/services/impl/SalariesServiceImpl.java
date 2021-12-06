@@ -12,6 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.ExemptionMechanismException;
+import javax.xml.crypto.Data;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class SalariesServiceImpl implements SalariesService {
@@ -24,17 +31,36 @@ public class SalariesServiceImpl implements SalariesService {
     @Override
     public SalariesDto saveSalaryAndEmpId(SalariesDto salariesDto) throws ExemptionMechanismException {
         try {
-            Salaries salary = SalariesMapper.INSTANCE.toSalaries(salariesDto);
-            if ((salariesDto.getEmployees().getId() != salariesRepository.findSalaryByEmplId(salariesDto.getEmployees().getId()))
-                && (salariesDto.getEmployees().getId() == employeesRepository.findEmplById(salariesDto.getEmployees().getId()))){
+            if(salariesDto.getEmployees().getId() != salariesRepository.findSalaryByEmplId(salariesDto.getEmployees().getId())) {
+                Salaries salary = SalariesMapper.INSTANCE.toSalaries(salariesDto);
                 salariesRepository.save(salary);
                 return SalariesMapper.INSTANCE.toSalariesDto(salary);
             } else {
-                System.out.println("Не удалось добавить сотрудника в список зарплат!");
+                System.out.println("Не удалось сохранить сотрудника в списке зарплат");
                 return null;
             }
         }catch (Exception e){
-            throw new ExemptionMechanismException("SalariesServiceImpl: method - saveSalaryAndEmplId() catch(Exception e)");
+            throw new ExemptionMechanismException("SalariesServiceImpl: method - saveSalaryAndEmplId() catch(Exception e) \n " +
+                    "Не удалось сохранить сотрудника в списке зарплат");
+        }
+    }
+
+    @Override
+    public SalariesDto changeSalaryColumn(SalariesDto salariesDto) {
+        try {
+            Salaries salaries = salariesRepository.findAllSeleryByEmplId(salariesDto.getEmployees().getId(), LocalDate.now());
+            if(salaries!=null) {
+                SalariesDto salariesDtoUpdated = SalariesMapper.INSTANCE.toSalariesDto(salaries);
+                salariesDtoUpdated.setSalary(salariesDto.getSalary());
+                salariesDtoUpdated.setStartDate(Date.valueOf(LocalDate.now()));
+                salariesDtoUpdated.setEndDate(salariesDto.getEndDate());
+                return SalariesMapper.INSTANCE.toSalariesDto(salariesRepository.save(SalariesMapper.INSTANCE.toSalaries(salariesDtoUpdated)));
+            } else {
+                System.out.println("Не удалсоь изменить зарплату для этого сотрудника");
+                return null;
+            }
+        }catch (Exception e){
+            throw new MyExceptions("SalariesServiceImpl - changeSalaryColumn method");
         }
     }
 }

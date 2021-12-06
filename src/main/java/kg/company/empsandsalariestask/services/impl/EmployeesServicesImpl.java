@@ -9,6 +9,8 @@ import kg.company.empsandsalariestask.services.EmployeesServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,9 +21,14 @@ public class EmployeesServicesImpl implements EmployeesServices {
 
     @Override
     public EmployeesDto saveEmployees(EmployeesDto employeesDto) {
-        Employees newEmployee = EmployeesMapper.INSTANCE.toEmployees(employeesDto);
-        employeesRepository.save(newEmployee);
-        return EmployeesMapper.INSTANCE.toEmployeesDto(newEmployee);
+        if(employeesDto.getId() != employeesRepository.findEmplById(employeesDto.getId())) {
+            Employees newEmployee = EmployeesMapper.INSTANCE.toEmployees(employeesDto);
+            employeesRepository.save(newEmployee);
+            return EmployeesMapper.INSTANCE.toEmployeesDto(newEmployee);
+        } else {
+            System.out.println("Сотрудник с таким Id уже существует!");
+            return null;
+        }
     }
 
     @Override
